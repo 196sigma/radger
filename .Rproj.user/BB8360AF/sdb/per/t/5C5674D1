@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "## Reginald Edwards\n## 26 April 2018\n##\n## Download EDGAR filings\n\n## Load package data\n##  - urls\nDATA_DIR <- \"\"\nURLS_DB_DIR <- paste(DATA_DIR, \"urls-db.txt\", sep = \"/\")\n\nget_cik <- function(ticker){\n  cik <- \"\"\n  return(cik)\n}\n\nget_filing_url <- function(cik, year){\n  ## year: filing year\n  cik <- as.numeric(cik)\n  urls.db <- read.delim(\"urls-db.txt\", stringsAsFactors = FALSE)\n  urls.db$filing.year <- substr(urls.db$filingdate,1,4)\n  filing.url <- urls.db[which(urls.db$cik == cik & urls.db$filing.year == year), \"url\"]\n  return(filing.url)\n}\n\ndownload_filing_cik <- function(cik, year){\n  cik <- as.numeric(cik)\n  filing.url <- get_filing_url(cik, year)\n  filename <- paste(cik, year, sep = \"-\")\n  filename <- paste(filename, \"html\", sep = \".\")\n  filing <- download.file(filing.url, destfile = filename, quiet = TRUE)\n  if(filing == 0) return(filename)\n}\n\n\ndownload_filing_ticker <- function(ticker, year){\n  cik <- get_cik(ticker)\n  filing.url <- get_filing_url(cik, year)\n}\n\ndownload_filing <- function(firm.id, firm.id.type, year){\n  filename <- \"\"\n  if(firm.id.type == 'ticker'){\n    filename <- download_filing_ticker(firm.id, year)\n  }else\n  if(firm.id.type == 'cik'){\n    filename <- download_filing_cik(firm.id, year)\n  }\n  if(length(filename)>0) filing <- readChar(filename, file.info(filename)$size)\n  return(filing)\n}\n\ndownload_filings <- function(firm.ids, years){\n  \n}\n\nfb_cik <-  \"0001326801\"\n#fb_url <- get_filing_url(fb_cik, 2014)\n#fb_filename <- download_filing_cik(fb_cik, 2014)\n#fb_filing_2014 <- download_filing(fb_cik, \"cik\", 2014)\n\n## TODO: define and return a custom filing object",
+    "created" : 1524841016193.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3145011970",
+    "id" : "5C5674D1",
+    "lastKnownWriteTime" : 1524841233,
+    "last_content_update" : 1524841233557,
+    "path" : "C:/Users/Reginald/Dropbox/radger/download_filings.R",
+    "project_path" : "download_filings.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
